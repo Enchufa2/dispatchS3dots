@@ -49,6 +49,10 @@ c(foobar, foobar)
 
 and there's no recursion this time, but `c.bar` was not called (!).
 
+## Update
+
+As [Tomas Kalibera pointed out](https://stat.ethz.ch/pipermail/r-devel/2018-February/075620.html), the documentation states that calling `NextMethod` from an anonymous function is not allowed (I missed that bit!), so this code should issue an error. Apparently, there is no way to replace (unnamed) arguments in dots for `NextMethod`.
+
 ## Workaround
 
 A possible workaround for this is to reinitialise the dispatch stack by calling the generic again if any argument was modified, and finally call `NextMethod` cleanly. This works, but it means that `c.foo` will be called twice every time an argument is modified:
